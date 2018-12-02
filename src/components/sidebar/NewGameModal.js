@@ -15,25 +15,36 @@ class NewGameModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false
+      isOpen: false,
+      totalPlayers: null
     };
-
-    this.toggle = this.toggle.bind(this);
-  }
-
-  toggle() {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
   }
 
   startGame() {
-    this.toggle()
+    const { totalPlayers } = this.state;
+    const { toggle, startGame } = this.props;
+
+    if (!totalPlayers || isNaN(totalPlayers) || totalPlayers < 1) {
+      console.log("Não é um número válido")
+    } else {
+      toggle();
+      startGame(totalPlayers);
+    }
+  }
+
+  changePlayers(event) {
+    const totalPlayers = event.target.value;
+    
+    this.setState({
+      totalPlayers
+    })
   }
 
   render() {
+    const { toggle, isOpen } = this.props;
+
     return (
-      <Modal centered isOpen={this.state.isOpen} toggle={this.toggle}>
+      <Modal centered isOpen={isOpen} toggle={toggle}>
         <ModalHeader>
           Start new game
         </ModalHeader>
@@ -42,7 +53,10 @@ class NewGameModal extends Component {
             <InputGroupAddon addonType="prepend">
               <InputGroupText>Number of Players</InputGroupText>
             </InputGroupAddon>
-            <Input />
+            <Input
+              value={this.state.totalPlayers}
+              onChange={this.changePlayers.bind(this)}
+            />
           </InputGroup>
         </ModalBody>
         <ModalFooter>

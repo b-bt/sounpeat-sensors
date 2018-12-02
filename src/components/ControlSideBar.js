@@ -6,9 +6,39 @@ import PlayerIndicator from './sidebar/PlayerIndicator';
 import NewGameModal from './sidebar/NewGameModal';
 
 class ControlSideBar extends Component {
+  state = {
+    startModal: false
+  }
+
+  toggleModal() {
+    this.setState({
+      startModal: !this.state.startModal
+    });
+  }
+
+  renderGameInfo() {
+    const { gameState, resetGame } = this.props;
+    const { totalPlayers, currentPlayer, currentRound } = gameState;
+    
+    return (
+      <div>
+        <RoundIndicator currentRound={currentRound} />
+        <PlayerIndicator
+          totalPlayers={totalPlayers}
+          currentPlayer={currentPlayer}
+        />
+        <div className="row mt-4">
+          <div className="col">
+            <Button color="danger" onClick={resetGame}>End game</Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   render() {
-    const { gameState } = this.props;
-    const { totalPlayers, currentPlayer } = gameState;
+    const { gameState, startGame } = this.props;
+    const { started } = gameState;
 
     const { containerStyle } = styles;
 
@@ -16,18 +46,23 @@ class ControlSideBar extends Component {
       <div className="col-5 p-4">
         <div style={containerStyle}>
           <h1>Soundpeat</h1>
-          <RoundIndicator currentRound={2} />
-          <PlayerIndicator
-            totalPlayers={totalPlayers}
-            currentPlayer={currentPlayer}
-          />
-          <div className="row mt-4">
-            <div className="col">
-              <Button color="danger">End game</Button>
-            </div>
-          </div>
+          { !started &&
+            <Button
+              color="success"
+              onClick={this.toggleModal.bind(this)}
+            >
+              Start Game
+            </Button>
+          }
+          { started &&
+            this.renderGameInfo()
+          }
         </div>
-        <NewGameModal />
+        <NewGameModal
+          isOpen={this.state.startModal}
+          toggle={this.toggleModal.bind(this)}
+          startGame={startGame}
+        />
       </div>
     );
   }
