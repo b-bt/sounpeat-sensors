@@ -7,6 +7,35 @@ import ControlSideBar from './components/ControlSideBar';
 import SensorsCollection from './components/SensorsCollection';
 
 class App extends Component {
+  state = {
+    gameState: {
+      totalPlayers: 6,
+      currentPlayer: 1
+    },
+    sensors: [
+      {
+        name: "Green Button",
+        type: "toggle",
+        isEnabled: true
+      },
+      {
+        name: "Red Button",
+        type: "toggle",
+        isEnabled: false
+      },
+      {
+        name: "Yellow Button",
+        type: "toggle",
+        isEnabled: true
+      },
+      {
+        name: "Ultrassonic sensor",
+        type: "value",
+        value: 2
+      },
+    ]
+  }
+
   render() {
     const { fillHeight } = styles;
 
@@ -14,8 +43,12 @@ class App extends Component {
       <div className="App">
         <div className="container-fluid" style={fillHeight}>
           <div className="row" style={fillHeight}>
-            <ControlSideBar />
-            <SensorsCollection />
+            <ControlSideBar
+              gameState={this.state.gameState}
+            />
+            <SensorsCollection
+              sensors={this.state.sensors}
+            />
           </div>
         </div>
       </div>
