@@ -1,28 +1,33 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { CardGroup } from 'reactstrap';
+
+import ControlSideBar from './components/ControlSideBar';
+import SensorsCollection from './components/SensorsCollection';
 
 class App extends Component {
   render() {
+    const { fillHeight } = styles;
+
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <div className="container-fluid" style={fillHeight}>
+          <div className="row" style={fillHeight}>
+            <ControlSideBar />
+            <SensorsCollection />
+          </div>
+        </div>
       </div>
     );
   }
 }
+
+const styles = {
+  fillHeight: {
+    minHeight: '100%',
+    height: '100%'
+  }
+};
 
 export default App;
